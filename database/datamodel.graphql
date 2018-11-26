@@ -1,0 +1,5 @@
+type Word {
+  id: ID! @unique
+  jp: String!
+  vn: String!
+}
