@@ -1,0 +1,302 @@
+# source: https://us1.prisma.sh/yuji-matsumoto-fe3e43/database/dev
+# timestamp: Mon Nov 26 2018 20:39:49 GMT+0700 (+07)
+
+type AggregateWord {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createWord(data: WordCreateInput!): Word!
+  updateWord(data: WordUpdateInput!, where: WordWhereUniqueInput!): Word
+  deleteWord(where: WordWhereUniqueInput!): Word
+  upsertWord(where: WordWhereUniqueInput!, create: WordCreateInput!, update: WordUpdateInput!): Word!
+  updateManyWords(data: WordUpdateManyMutationInput!, where: WordWhereInput): BatchPayload!
+  deleteManyWords(where: WordWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word]!
+  word(where: WordWhereUniqueInput!): Word
+  wordsConnection(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WordConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  word(where: WordSubscriptionWhereInput): WordSubscriptionPayload
+}
+
+type Word implements Node {
+  id: ID!
+  jp: String!
+  vn: String!
+}
+
+"""A connection to a list of items."""
+type WordConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WordEdge]!
+  aggregate: AggregateWord!
+}
+
+input WordCreateInput {
+  jp: String!
+  vn: String!
+}
+
+"""An edge in a connection."""
+type WordEdge {
+  """The item at the end of the edge."""
+  node: Word!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum WordOrderByInput {
+  id_ASC
+  id_DESC
+  jp_ASC
+  jp_DESC
+  vn_ASC
+  vn_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type WordPreviousValues {
+  id: ID!
+  jp: String!
+  vn: String!
+}
+
+type WordSubscriptionPayload {
+  mutation: MutationType!
+  node: Word
+  updatedFields: [String!]
+  previousValues: WordPreviousValues
+}
+
+input WordSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WordSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WordSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WordSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WordWhereInput
+}
+
+input WordUpdateInput {
+  jp: String
+  vn: String
+}
+
+input WordUpdateManyMutationInput {
+  jp: String
+  vn: String
+}
+
+input WordWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WordWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WordWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WordWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  jp: String
+
+  """All values that are not equal to given value."""
+  jp_not: String
+
+  """All values that are contained in given list."""
+  jp_in: [String!]
+
+  """All values that are not contained in given list."""
+  jp_not_in: [String!]
+
+  """All values less than the given value."""
+  jp_lt: String
+
+  """All values less than or equal the given value."""
+  jp_lte: String
+
+  """All values greater than the given value."""
+  jp_gt: String
+
+  """All values greater than or equal the given value."""
+  jp_gte: String
+
+  """All values containing the given string."""
+  jp_contains: String
+
+  """All values not containing the given string."""
+  jp_not_contains: String
+
+  """All values starting with the given string."""
+  jp_starts_with: String
+
+  """All values not starting with the given string."""
+  jp_not_starts_with: String
+
+  """All values ending with the given string."""
+  jp_ends_with: String
+
+  """All values not ending with the given string."""
+  jp_not_ends_with: String
+  vn: String
+
+  """All values that are not equal to given value."""
+  vn_not: String
+
+  """All values that are contained in given list."""
+  vn_in: [String!]
+
+  """All values that are not contained in given list."""
+  vn_not_in: [String!]
+
+  """All values less than the given value."""
+  vn_lt: String
+
+  """All values less than or equal the given value."""
+  vn_lte: String
+
+  """All values greater than the given value."""
+  vn_gt: String
+
+  """All values greater than or equal the given value."""
+  vn_gte: String
+
+  """All values containing the given string."""
+  vn_contains: String
+
+  """All values not containing the given string."""
+  vn_not_contains: String
+
+  """All values starting with the given string."""
+  vn_starts_with: String
+
+  """All values not starting with the given string."""
+  vn_not_starts_with: String
+
+  """All values ending with the given string."""
+  vn_ends_with: String
+
+  """All values not ending with the given string."""
+  vn_not_ends_with: String
+}
+
+input WordWhereUniqueInput {
+  id: ID
+}

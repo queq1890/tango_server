@@ -3,6 +3,6 @@ const { Subscription } = require('./Subscription');
 
 module.exports = {
   Query,
-  Mutation: {},
-  Subscription
+  // Mutation: {},
+  // Subscription
 };
